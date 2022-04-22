@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ChallengeCompletionSteps {
+  completedAt DateTime @db.Date
+  id          String   @db.ObjectId
+}
+
+type ChallengeSteps {
+  description String
+  id          String                 @db.ObjectId
+  image       String
+  location    ChallengeStepsLocation
+  name        String
+  precision   Int
+}
+
+type ChallengeStepsLocation {
+  x Int
+  y Int
+  z Int
+}
+
+type UserAccountData {
+  characters UserAccountDataCharacters[]
+  name       String
+}
+
+type UserAccountDataCharacters {
+  class String
+  name  String
+}
+
+type UserSettings {
+  mode String
+}
+
+model Challenge {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  authorId  String           @db.ObjectId
+  author   User   @relation(fields: [authorId], references: [id])
+  createdAt DateTime         @db.Date
+  name      String
+  state     String
+  steps     ChallengeSteps[]
+  updatedAt DateTime         @db.Date
+}
+
+model ChallengeCompletion {
+  id          String                     @id @default(auto()) @map("_id") @db.ObjectId
+  challengeId String                     @db.ObjectId
+  steps       ChallengeCompletionSteps[]
+  userId      String                     @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  accountData      UserAccountData
+  apiKey           String
+  createdAt        DateTime        @db.Date
+  primaryCharacter Int
+  settings         UserSettings
+  status           String
+  updatedAt        DateTime        @db.Date
+  challenges       Challenge[]
+  challengeCompletions ChallengeCompletion[]
+}
