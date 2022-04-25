@@ -1,10 +1,8 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { PrismaClient } from '@prisma/client'
 import { BasicUser } from '~/types/next-auth'
-
-const prisma = new PrismaClient()
+import { getUserByToken } from '~/util/auth'
 
 function isUserToken(token: object): token is BasicUser {
   // eslint-disable-next-line no-prototype-builtins
@@ -18,13 +16,14 @@ export default NextAuth({
   },
   providers: [
     CredentialsProvider({
+      id: 'gw2-api-key',
       name: 'Guild Wars 2 API Key',
       credentials: {
-        token: { label: 'GW2 API Key', type: 'text', placeholder: 'Key...' },
+        apiKey: { label: 'GW2 API Key', type: 'text', placeholder: 'Key...' },
       },
       async authorize(credentials, _req) {
-        if (!credentials?.token) return null
-        const result = await prisma.user.findFirst({ where: { apiKey: credentials?.token } })
+        if (!credentials?.apiKey) return null
+        const result = await getUserByToken(credentials.apiKey)
         if (result) {
           return result
         } else {

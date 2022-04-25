@@ -28,13 +28,26 @@ type ChallengeStepsLocation {
 }
 
 type UserAccountData {
+  access     String[]
   characters UserAccountDataCharacters[]
+  guilds     UserAccountDataGuilds[]
   name       String
 }
 
 type UserAccountDataCharacters {
-  class String
-  name  String
+  age        Int
+  class      String
+  gender     String
+  guild      String
+  name       String
+  profession String
+  race       String
+}
+
+type UserAccountDataGuilds {
+  id   String
+  name String
+  tag  String
 }
 
 type UserSettings {
@@ -65,6 +78,7 @@ model User {
   accountData      UserAccountData
   apiKey           String
   createdAt        DateTime        @db.Date
+  gw2Id            String
   primaryCharacter Int
   settings         UserSettings
   status           String
