@@ -3,10 +3,13 @@ import Head from 'next/head'
 import { AppProps } from 'next/app'
 import { DefaultSeo } from 'next-seo'
 import { SessionProvider } from 'next-auth/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import useFathom from '~/components/hooks/useFathom'
 import SEO from '~/../next-seo.config'
 import EmojiFavicon from '~/components/primitives/EmojiFavicon'
 import Heading from '~/components/primitives/Heading'
+
+const queryClient = new QueryClient()
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   useFathom()
@@ -18,8 +21,10 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       </Head>
       <DefaultSeo {...SEO} />
       <SessionProvider session={session}>
-        <Heading />
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Heading />
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </SessionProvider>
       <EmojiFavicon emoji="🤖" />
     </>
