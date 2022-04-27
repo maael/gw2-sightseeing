@@ -2,7 +2,20 @@ import _NextAuth from 'next-auth'
 
 interface BasicUser {
   accountData: {
-    characters: []
+    characters: Array<{
+      age: number
+      class: string
+      gender: string
+      guild: string
+      name: string
+      profession: string
+      race: string
+    }>
+    guilds: Array<{
+      id: string
+      name: string
+      tag: string
+    }>
     name: string
   }
   settings: {

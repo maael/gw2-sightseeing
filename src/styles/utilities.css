@@ -2,3 +2,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.wrapper {
+  @apply mx-auto max-w-3xl w-full px-5;
+}

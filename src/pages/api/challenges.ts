@@ -23,6 +23,11 @@ const handler: NextApiHandler = async (req, res) => {
       const cleaned = challenges.map(cleanChallenge)
       res.json(cleaned)
     }
+  } else if (req.method === 'POST') {
+    res.json({ success: true })
+  } else if (req.method === 'PUT') {
+    const id = req.query.id.toString()
+    res.json({ success: true, id })
   } else {
     res.status(401).json({ error: 'Not implemented' })
   }

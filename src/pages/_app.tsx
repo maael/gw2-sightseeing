@@ -23,7 +23,9 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           <Heading />
-          <Component {...pageProps} />
+          <div className="flex flex-1">
+            <Component {...pageProps} />
+          </div>
         </QueryClientProvider>
       </SessionProvider>
       <EmojiFavicon emoji="🤖" />
