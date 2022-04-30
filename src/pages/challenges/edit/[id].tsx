@@ -56,6 +56,7 @@ function useChallengeForm() {
   React.useEffect(() => {
     const steps = data?.steps?.map((step) => step)
     reset({ name: data?.name, steps })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     replace(steps as any)
   }, [data, reset, replace])
   return {
@@ -86,6 +87,17 @@ export default function Index() {
   )
   return (
     <div className="wrapper">
+      <button
+        onClick={async () => {
+          const res = await fetch('/api/s3', {
+            method: 'POST',
+            body: JSON.stringify({ objectId: 'example', keys: ['123123.png'] }),
+          }).then((r) => r.json())
+          console.info('what', res)
+        }}
+      >
+        Upload Images
+      </button>
       <form
         onSubmit={handleSubmit((data) => {
           void fetch(`/api/challenges${isEdit ? `?id=${id}` : ''}`, {
