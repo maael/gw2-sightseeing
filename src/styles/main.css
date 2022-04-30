@@ -7,7 +7,14 @@
 
 html,
 body,
-body > div:first-child,
-div#__next {
+body > div:first-child {
   @apply text-white bg-slate-600 h-full flex flex-col;
+}
+
+div#__next {
+  @apply text-white bg-slate-600 flex flex-col;
+}
+
+body {
+  @apply pb-5;
 }

@@ -1,7 +1,5 @@
-import { Challenge, PrismaClient, User } from '@prisma/client'
+import { Challenge, prisma, User } from '~/util/prisma'
 import { NextApiHandler } from 'next'
-
-const prisma = new PrismaClient()
 
 function clean(user: User & { challenges: Challenge[] }) {
   return {
