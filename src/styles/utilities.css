@@ -4,5 +4,9 @@
 }
 
 .wrapper {
-  @apply mx-auto max-w-3xl w-full px-5;
+  @apply mx-auto max-w-4xl w-full px-5;
+}
+
+.wrapper-xl {
+  @apply mx-auto max-w-7xl w-full px-5;
 }

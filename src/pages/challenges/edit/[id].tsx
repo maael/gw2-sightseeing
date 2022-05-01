@@ -33,9 +33,9 @@ class PointerSensorWithoutPreventDefault extends PointerSensor {
 }
 
 export default function Index() {
-  const { register, onSubmit, controlledFields, steps, setValue } = useChallengeForm()
+  const { elements, grab } = useScreenGrab()
+  const { register, onSubmit, controlledFields, steps, setValue } = useChallengeForm(grab)
   const sensors = useSensors(useSensor(PointerSensorWithoutPreventDefault))
-  const { elements } = useScreenGrab()
   return (
     <div className="wrapper">
       {elements}
@@ -50,11 +50,11 @@ export default function Index() {
                 {controlledFields.map((field, index) => (
                   <Item
                     key={field.id}
-                    id={field.id}
                     register={register}
                     index={index}
                     steps={steps}
                     setValue={setValue}
+                    field={field}
                   />
                 ))}
               </SortableContext>

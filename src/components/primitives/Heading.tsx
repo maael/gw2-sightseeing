@@ -2,6 +2,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { CgKeyhole } from 'react-icons/cg'
 import { AiOutlineLogout } from 'react-icons/ai'
 import Link from 'next/link'
+import ConnectionStatus from './ConnectionStatus'
 
 export default function Heading() {
   const { data: session } = useSession()
@@ -33,6 +34,7 @@ export default function Heading() {
           </button>
         </form>
       )}
+      <ConnectionStatus />
     </div>
   )
 }

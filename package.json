@@ -41,7 +41,8 @@
     "react-dropzone": "^13.0.0",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
-    "react-query": "^3.38.0"
+    "react-query": "^3.38.0",
+    "react-use-websocket": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",

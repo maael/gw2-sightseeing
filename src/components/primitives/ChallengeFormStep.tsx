@@ -9,19 +9,19 @@ import Input from '~/components/primitives/Input'
 import { ChallengeForm } from '~/types'
 
 export default function ChallengeFormStep({
-  id,
+  field,
   index,
   register,
   steps,
   setValue,
 }: {
-  id: string
+  field: ChallengeForm['steps'][0]
   index: number
   register: UseFormRegister<ChallengeForm>
   setValue: UseFormSetValue<ChallengeForm>
   steps: { remove: UseFieldArrayRemove }
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: field.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -48,7 +48,7 @@ export default function ChallengeFormStep({
           <CgTrash />
         </button>
       </div>
-      <PreviewImageInput onChange={(file) => setValue(`steps.${index}.image`, file)} />
+      <PreviewImageInput existing={field.image} onChange={(file) => setValue(`steps.${index}.image`, file)} />
       <div className="grid grid-cols-1 gap-2">
         <Input<ChallengeForm> register={register} name={`steps.${index}.name`} label="Name" />
         <Input<ChallengeForm> register={register} name={`steps.${index}.description`} label="Notes" />

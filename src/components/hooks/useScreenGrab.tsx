@@ -1,20 +1,28 @@
+import Router from 'next/router'
 import React from 'react'
+
+async function canvasToFile(canvas: HTMLCanvasElement): Promise<File> {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(new File([blob!], 'test.png', { type: 'image/png' })), 'image/png')
+  })
+}
 
 export default function useScreenGrab() {
   const videoRef = React.useRef<HTMLVideoElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const [active, setActive] = React.useState(false)
   async function start() {
     try {
-      if (videoRef.current)
+      if (videoRef.current) {
         videoRef.current.srcObject = await navigator.mediaDevices.getDisplayMedia({
-          video: {
-            cursor: false,
-            displaySurface: 'window',
-          } as any,
+          video: true,
           audio: false,
         })
+        setActive(true)
+      }
     } catch (e) {
       console.error('Error', e)
+      setActive(false)
     }
   }
   async function stop() {
@@ -23,24 +31,37 @@ export default function useScreenGrab() {
 
     tracks.forEach((track) => track.stop())
     videoRef.current.srcObject = null
+    setActive(false)
   }
-  function grab() {
-    if (!canvasRef.current || !videoRef.current) return
+  React.useEffect(() => {
+    async function handle() {
+      if (active) {
+        await stop()
+      }
+    }
+    Router.events.on('routeChangeStart', handle)
+    return () => {
+      Router.events.off('routeChangeStart', handle)
+    }
+  }, [active])
+  async function grab() {
+    if (!active || !canvasRef.current || !videoRef.current) return
     canvasRef.current.width = videoRef.current.videoWidth
     canvasRef.current.height = videoRef.current.videoHeight
     canvasRef.current
       .getContext('2d')!
       .drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height)
+    const file = await canvasToFile(canvasRef.current)
+    return file
   }
   return {
     elements: (
       <div>
-        <button onClick={start}>Start Capture</button>
-        <button onClick={stop}>Stop Capture</button>
-        <button onClick={grab}>Grab Capture</button>
-        <video className="border rounded-sm border-red-200" ref={videoRef}></video>
-        <canvas className="border rounded-sm border-red-200" ref={canvasRef} />
+        {active ? <button onClick={stop}>Stop Captures</button> : <button onClick={start}>Enable Captures</button>}
+        <video className="border rounded-sm border-red-200 hidden" autoPlay ref={videoRef}></video>
+        <canvas className="border rounded-sm border-red-200 hidden" ref={canvasRef} />
       </div>
     ),
+    grab,
   }
 }

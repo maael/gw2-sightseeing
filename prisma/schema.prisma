@@ -22,9 +22,9 @@ type ChallengeSteps {
 }
 
 type ChallengeStepsLocation {
-  x Int
-  y Int
-  z Int
+  x Float
+  y Float
+  z Float
 }
 
 type UserAccountData {

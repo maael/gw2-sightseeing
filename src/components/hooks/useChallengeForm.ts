@@ -3,18 +3,21 @@ import { useRouter } from 'next/router'
 import { ObjectId } from 'bson'
 import { useChallenge } from '~/util/queries'
 import { ChallengeForm } from '~/types'
+import useLink from './useLink'
+import React from 'react'
 
-export function useChallengeForm() {
+export function useChallengeForm(grab: () => Promise<File | undefined>) {
   const { query, push } = useRouter()
   const isEdit = query.id?.toString() !== 'new'
+  const id = isEdit ? query.id?.toString() : new ObjectId().toString()
   const { register, handleSubmit, watch, control, reset, setValue } = useForm<ChallengeForm>({
     defaultValues: {
-      id: isEdit ? query.id?.toString() : new ObjectId().toString(),
+      id,
     },
   })
   useChallenge(isEdit ? query.id?.toString() : undefined, (initial) => {
     const steps = initial?.steps?.map((step) => step)
-    reset({ name: initial?.name, steps })
+    reset({ name: initial?.name, id: initial.id, description: initial.description, steps })
     replace(steps as any)
   })
   const { fields, append, remove, move, replace } = useFieldArray({
@@ -28,7 +31,11 @@ export function useChallengeForm() {
       ...watchFieldArray[index],
     }
   })
+  React.useEffect(() => {
+    setValue('id', id)
+  }, [setValue, id])
   const onSubmit = handleSubmit(async (data) => {
+    console.info('what the fuck', id, data)
     const images = new Map(
       data.steps.filter((step) => step.image instanceof File).map((step) => [`${step.id}.png`, step.image])
     )
@@ -54,9 +61,11 @@ export function useChallengeForm() {
     await fetch(`/api/challenges`, {
       method: isEdit ? 'PUT' : 'POST',
       body: JSON.stringify(data),
-    }).then((r) => r.json())
-    // .then((data) => push(data.id ? `/challenges/${data.id}` : '/'))
+    })
+      .then((r) => r.json())
+      .then((data) => push(data.id ? `/challenges/${data.id}` : '/'))
   })
+  const { link, mapData } = useLink()
   return {
     register,
     handleSubmit,
@@ -69,16 +78,21 @@ export function useChallengeForm() {
       append,
       remove,
       move,
-      add: () =>
+      add: async () => {
+        const image = await grab()
+        const location = {
+          x: link?.avatar.position[0] || 0,
+          y: link?.avatar.position[1] || 0,
+          z: 0,
+        }
         append({
           id: new ObjectId().toString(),
-          location: {
-            x: 1,
-            y: 2,
-            z: 3,
-          },
+          location,
           precision: 100,
-        }),
+          image,
+          name: `Somewhere in the ${mapData?.name || 'mists'}`,
+        })
+      },
       handleDrag: (e) => move(e.active.data.current?.sortable.index, e.over?.data.current?.sortable.index),
     },
     setValue,
