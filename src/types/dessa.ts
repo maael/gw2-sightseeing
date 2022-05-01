@@ -7,13 +7,13 @@ export interface LinkData {
   avatar: {
     front: [number, number]
     top: [number, number]
-    position: [number, number]
+    position: [number, number, number]
   }
   name: string
   camera: {
     front: [number, number]
     top: [number, number]
-    position: [number, number]
+    position: [number, number, number]
   }
   identity: {
     name: string

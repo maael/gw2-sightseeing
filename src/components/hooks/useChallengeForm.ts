@@ -82,8 +82,8 @@ export function useChallengeForm(grab: () => Promise<File | undefined>) {
         const image = await grab()
         const location = {
           x: link?.avatar.position[0] || 0,
-          y: link?.avatar.position[1] || 0,
-          z: 0,
+          y: link?.avatar.position[2] || 0,
+          z: link?.avatar.position[1] || 0,
         }
         append({
           id: new ObjectId().toString(),
