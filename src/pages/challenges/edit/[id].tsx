@@ -6,6 +6,7 @@ import { DndContext, useSensor, useSensors, PointerSensor } from '@dnd-kit/core'
 import Input from '~/components/primitives/Input'
 import { useChallengeForm } from '~/components/hooks/useChallengeForm'
 import Item from '~/components/primitives/ChallengeFormStep'
+import useScreenGrab from '~/components/hooks/useScreenGrab'
 
 class PointerSensorWithoutPreventDefault extends PointerSensor {
   static SKIP_ELEMENTS = ['INPUT', 'BUTTON']
@@ -34,8 +35,10 @@ class PointerSensorWithoutPreventDefault extends PointerSensor {
 export default function Index() {
   const { register, onSubmit, controlledFields, steps, setValue } = useChallengeForm()
   const sensors = useSensors(useSensor(PointerSensorWithoutPreventDefault))
+  const { elements } = useScreenGrab()
   return (
     <div className="wrapper">
+      {elements}
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
         <input {...register('id')} type="hidden" />
         <Input register={register} name="name" label="Challenge Name" />
