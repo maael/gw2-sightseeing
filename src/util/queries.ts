@@ -24,5 +24,5 @@ async function getUser(ctx): Promise<User & { challenges: Challenge }> {
 }
 
 export function useUser(id?: string) {
-  return useQuery(['users', id], getUser)
+  return useQuery(['users', id], getUser, { enabled: !!id })
 }

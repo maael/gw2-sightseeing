@@ -7,6 +7,7 @@ import { CSS } from '@dnd-kit/utilities'
 import PreviewImageInput from '~/components/primitives/PreviewImageInput'
 import Input from '~/components/primitives/Input'
 import { ChallengeForm } from '~/types'
+import Parchment from './Parchment'
 
 export default function ChallengeFormStep({
   field,
@@ -29,36 +30,32 @@ export default function ChallengeFormStep({
   }
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="flex flex-col p-2 gap-2 ring-1 ring-white rounded-md px-3 bg-slate-600"
-    >
-      <input type="hidden" {...register(`steps.${index}.id`)} />
-      <div className="flex flex-row items-center gap-2">
-        <MdOutlineDragHandle className="transition-transform transform hover:animate-pulse hover:scale-125" />
-        <div className="flex-1">Step {index + 1}.</div>
-        <button
-          className="px-2 py-1 rounded-sm text-red-600 text-lg transition-transform transform hover:animate-pulse hover:scale-125"
-          type="button"
-          onClick={() => steps.remove(index)}
-        >
-          <CgTrash />
-        </button>
-      </div>
-      <PreviewImageInput existing={field.image} onChange={(file) => setValue(`steps.${index}.image`, file)} />
-      <div className="grid grid-cols-1 gap-2">
-        <Input<ChallengeForm> register={register} name={`steps.${index}.name`} label="Name" />
-        <Input<ChallengeForm> register={register} name={`steps.${index}.description`} label="Notes" />
-      </div>
-      <div className="grid grid-cols-3 gap-2">
-        <Input<ChallengeForm> register={register} name={`steps.${index}.location.x`} label="X" />
-        <Input<ChallengeForm> register={register} name={`steps.${index}.location.y`} label="Y" />
-        <Input<ChallengeForm> register={register} name={`steps.${index}.location.z`} label="Z" />
-      </div>
-      <Input<ChallengeForm> register={register} name={`steps.${index}.precision`} label="Precision" />
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <Parchment className="flex flex-col gap-2">
+        <input type="hidden" {...register(`steps.${index}.id`)} />
+        <div className="flex flex-row items-center gap-2">
+          <MdOutlineDragHandle className="text-2xl transition-transform transform hover:animate-pulse hover:scale-125" />
+          <div className="flex-1">Step {index + 1}.</div>
+          <button
+            className="px-2 py-1 rounded-sm text-red-600 text-2xl transition-transform transform hover:animate-pulse hover:scale-125"
+            type="button"
+            onClick={() => steps.remove(index)}
+          >
+            <CgTrash />
+          </button>
+        </div>
+        <PreviewImageInput existing={field.image} onChange={(file) => setValue(`steps.${index}.image`, file)} />
+        <div className="grid grid-cols-1 gap-2">
+          <Input<ChallengeForm> register={register} name={`steps.${index}.name`} label="Name" />
+          <Input<ChallengeForm> register={register} name={`steps.${index}.description`} label="Notes" />
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <Input<ChallengeForm> register={register} name={`steps.${index}.location.x`} label="X" />
+          <Input<ChallengeForm> register={register} name={`steps.${index}.location.y`} label="Y" />
+          <Input<ChallengeForm> register={register} name={`steps.${index}.location.z`} label="Z" />
+        </div>
+        <Input<ChallengeForm> register={register} name={`steps.${index}.precision`} label="Precision" />
+      </Parchment>
     </div>
   )
 }

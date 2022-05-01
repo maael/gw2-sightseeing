@@ -8,13 +8,36 @@
 html,
 body,
 body > div:first-child {
-  @apply text-white bg-slate-600 h-full flex flex-col;
+  @apply text-black h-full flex flex-col text-lg;
 }
 
 div#__next {
-  @apply text-white bg-slate-600 flex flex-col;
+  @apply text-black flex flex-col;
 }
 
 body {
+  width: 100%;
+  background-image: url(/images/main-bg.png);
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-attachment: fixed;
+  background-color: #b8d5d2;
+  font-family: Tapestry;
+  font-weight: bold;
+  color: #000000;
   @apply pb-5;
+}
+
+@font-face {
+  font-family: GoldBox;
+  src: url(/fonts/Gold Box 8x8.woff);
+}
+@font-face {
+  font-family: Tapestry;
+  src: url(/fonts/Tapestry-Regular.ttf);
+}
+
+input {
+  -webkit-background-clip: text !important;
+  text-overflow: ellipsis;
 }

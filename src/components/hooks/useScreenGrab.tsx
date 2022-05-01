@@ -1,5 +1,6 @@
 import Router from 'next/router'
 import React from 'react'
+import Scroll from '../primitives/Scroll'
 
 async function canvasToFile(canvas: HTMLCanvasElement): Promise<File> {
   return new Promise((resolve) => {
@@ -56,11 +57,19 @@ export default function useScreenGrab() {
   }
   return {
     elements: (
-      <div>
-        {active ? <button onClick={stop}>Stop Captures</button> : <button onClick={start}>Enable Captures</button>}
+      <Scroll outerClassName="inline-block">
+        {active ? (
+          <button type="button" onClick={stop}>
+            Stop Captures
+          </button>
+        ) : (
+          <button type="button" onClick={start}>
+            Enable Captures
+          </button>
+        )}
         <video className="border rounded-sm border-red-200 hidden" autoPlay ref={videoRef}></video>
         <canvas className="border rounded-sm border-red-200 hidden" ref={canvasRef} />
-      </div>
+      </Scroll>
     ),
     grab,
   }

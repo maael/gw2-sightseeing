@@ -7,6 +7,7 @@ import Input from '~/components/primitives/Input'
 import { useChallengeForm } from '~/components/hooks/useChallengeForm'
 import Item from '~/components/primitives/ChallengeFormStep'
 import useScreenGrab from '~/components/hooks/useScreenGrab'
+import Parchment from '~/components/primitives/Parchment'
 
 class PointerSensorWithoutPreventDefault extends PointerSensor {
   static SKIP_ELEMENTS = ['INPUT', 'BUTTON']
@@ -37,12 +38,16 @@ export default function Index() {
   const { register, onSubmit, controlledFields, steps, setValue } = useChallengeForm(grab)
   const sensors = useSensors(useSensor(PointerSensorWithoutPreventDefault))
   return (
-    <div className="wrapper">
-      {elements}
+    <div className="wrapper pb-10">
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
-        <input {...register('id')} type="hidden" />
-        <Input register={register} name="name" label="Challenge Name" />
-        <Input register={register} name="description" label="Challenge Description" />
+        <div className="flex flex-row gap-5 items-start">
+          <Parchment outerClassName="flex-1" className="flex flex-col gap-2">
+            <input {...register('id')} type="hidden" />
+            <Input register={register} name="name" label="Challenge Name" />
+            <Input register={register} name="description" label="Challenge Description" />
+          </Parchment>
+          {elements}
+        </div>
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <DndContext onDragEnd={steps.handleDrag} sensors={sensors}>

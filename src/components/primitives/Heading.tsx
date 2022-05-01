@@ -2,37 +2,50 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { CgKeyhole } from 'react-icons/cg'
 import { AiOutlineLogout } from 'react-icons/ai'
 import Link from 'next/link'
-import ConnectionStatus from './ConnectionStatus'
+import ConnectionStatus from '~/components/primitives/ConnectionStatus'
+import Scroll from '~/components/primitives/Scroll'
 
 export default function Heading() {
   const { data: session } = useSession()
   return (
-    <div className="flex flex-row gap-2 wrapper items-end py-2 mb-3" style={{ flex: 0 }}>
-      <div className="flex-1 text-lg">
-        <Link href="/">Guild Wars 2 | Observer Notes</Link>
-      </div>
+    <div className="flex flex-row gap-5 wrapper items-start py-2 mb-3 justify-between" style={{ flex: 0 }}>
+      <Scroll outerClassName="text-3xl">
+        <Link href="/">
+          <a>
+            <span className="hidden md:inline-block mr-2">Guild Wars 2 - </span>Sightseeing Logs
+          </a>
+        </Link>
+      </Scroll>
       {session ? (
-        <div className="flex flex-row gap-2 items-center justify-center">
+        <Scroll className="flex flex-row gap-2 items-center justify-center">
           <Link href="/users/me">{session.user?.name}</Link>
           <button onClick={() => signOut()}>
             <AiOutlineLogout />
           </button>
-        </div>
+        </Scroll>
       ) : (
-        <form
-          className="flex flex-row gap-2 items-center justify-center"
-          onSubmit={(e) => {
-            e.preventDefault()
-            signIn('gw2-api-key', {
-              apiKey: (e.currentTarget.elements as unknown as { apiKey: { value: string } }).apiKey.value.trim(),
-            })
-          }}
-        >
-          <input type="text" name="apiKey" />
-          <button type="submit">
-            <CgKeyhole />
-          </button>
-        </form>
+        <Scroll>
+          <form
+            className="flex flex-row gap-2 items-center justify-center"
+            onSubmit={(e) => {
+              e.preventDefault()
+              signIn('gw2-api-key', {
+                apiKey: (e.currentTarget.elements as unknown as { apiKey: { value: string } }).apiKey.value.trim(),
+              })
+            }}
+          >
+            <input
+              type="text"
+              name="apiKey"
+              placeholder="API Key..."
+              className="bg-transparent border-b-2 placeholder:text-black shadow-transparent"
+              style={{ borderColor: '#4E371B' }}
+            />
+            <button type="submit">
+              <CgKeyhole />
+            </button>
+          </form>
+        </Scroll>
       )}
       <ConnectionStatus />
     </div>
