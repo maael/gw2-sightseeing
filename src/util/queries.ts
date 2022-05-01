@@ -7,14 +7,13 @@ async function getChallenge(ctx): Promise<Challenge & { author: User }> {
   return id ? fetch(`/api/challenges?id=${id}`).then((r) => r.json()) : { steps: [{ id: new ObjectId().toString() }] }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useChallenge(id?: string, onSettled?: (data: any) => void) {
   return useQuery(['challenges', id], getChallenge, {
     onSettled,
     enabled: !!id,
     refetchInterval: false,
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnReconnect: false,
   })
 }

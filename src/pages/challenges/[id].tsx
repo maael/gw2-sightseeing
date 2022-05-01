@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useChallenge } from '~/util/queries'
@@ -15,11 +16,18 @@ export default function Challenges() {
       {isLoading ? <div>Loading</div> : null}
       {data?.name}
       {isAuthor ? <Link href={`/challenges/edit/${data.id}`}>Edit</Link> : null}
-      {data?.steps?.map((step) => (
-        <div key={step.id}>
-          {step.name} - {step.description}
-        </div>
-      ))}
+      <div className="grid grid-cols-2 gap-2">
+        {data?.steps?.map((step, idx) => (
+          <div key={step.id}>
+            {idx}. {step.name} - {step.description}
+            {step.image ? (
+              <div className="aspect-video relative">
+                <Image layout="fill" src={`https://${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_DOMAIN}/${step.image}`} />
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

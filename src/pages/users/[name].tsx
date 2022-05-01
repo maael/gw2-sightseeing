@@ -8,7 +8,6 @@ function usePageUser() {
   const { data: session } = useSession()
   let user = session?.user
   const { data } = useUser(isSelf ? undefined : query.name?.toString())
-  console.info(data, isSelf, query.name?.toString())
   if (isSelf && data) user = data as any
   const guildMap = new Map(user?.accountData?.guilds?.map((g) => [g.id, g]))
   return { user, guildMap }
