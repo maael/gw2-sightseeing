@@ -1,46 +1,34 @@
-# Next Template
+# GW2 Sightseeing
 
-A simple repo to act as a template for a Next.js project.
+## Rough Idea
 
-Includes:
+- Guild Wars 2 exposes some real-time data via [MumbleLink](https://wiki.guildwars2.com/wiki/API:MumbleLink)
+- We can expose that data to websites via Web Sockets, and a GW2 Plugin (like [this one](https://github.com/maael/dessa))
+- This data includes positional data, and FFXIV has this [Sightseeing Log](https://ffxiv.consolegameswiki.com/wiki/Sightseeing_Log) idea I think is neat, plus GW2 has lots of hidden secret places
+- Let's put it all together
 
-- Next.js
-- TypeScript
-- Prettier
-- Eslint
-- Prettier + Eslint on commit
-- Fathom Analytics hook
-- next-seo
-- Sane CSS reset/starting point with Tailwind
+## Features
 
-## Usage
-
-- Remove [GitHub workflow](./github/workflows/usage.yml) to track usage.
-
-<!-- TEMPLATE_LIST_START -->
-
-# 22 Repositories using template
-
-- [maael/vibe-check](https://github.com/maael/vibe-check)
-- [maael/gladius-codex](https://github.com/maael/gladius-codex)
-- [maael/morning-greeting](https://github.com/maael/morning-greeting)
-- [maael/what-now](https://github.com/maael/what-now)
-- [maael/factory](https://github.com/maael/factory)
-- [maael/info](https://github.com/maael/info)
-- [maael/cached-proxy](https://github.com/maael/cached-proxy)
-- [maael/twitch-guild-wars-2-build-viewer](https://github.com/maael/twitch-guild-wars-2-build-viewer)
-- [maael/discord-slash-commands](https://github.com/maael/discord-slash-commands)
-- [maael/meow-are-you](https://github.com/maael/meow-are-you)
-- [maael/where-am-i](https://github.com/maael/where-am-i)
-- [maael/dessa-site](https://github.com/maael/dessa-site)
-- [maael/tweetem](https://github.com/maael/tweetem)
-- [maael/observatory](https://github.com/maael/observatory)
-- [maael/gh-short-url](https://github.com/maael/gh-short-url)
-- [maael/who-was](https://github.com/maael/who-was)
-- [maael/tilted](https://github.com/maael/tilted)
-- [maael/bopsy](https://github.com/maael/bopsy)
-- [maael/iono](https://github.com/maael/iono)
-- [Bodmass/guildy](https://github.com/Bodmass/guildy)
-- [maael/hydratwitch](https://github.com/maael/hydratwitch)
-- [maael/betrayal-game](https://github.com/maael/betrayal-game)
-<!-- TEMPLATE_LIST_END -->
+- [x] Sign in/User system based on [GW2 API Keys](https://wiki.guildwars2.com/wiki/API:API_key)
+  - [x] Get Guild data
+  - [x] Get Character data
+  - [ ] Get World data
+  - [ ] Allow optionally showing/hiding the data
+  - [ ] Have active "Following adventures of..." shown
+- [x] Can create Sightseeing "challenges"
+  - [x] Including images
+  - [ ] Include draft/published states
+  - [ ] Include description
+  - [ ] Include automatically derived required expansions
+  - [ ] Include mount/mastery suggestions
+- [x] Can edit
+  - All of the above stuff too
+- [ ] Users can start challenges
+  - [ ] Once started, it will automatically track progress while on the challenge page
+    - [ ] Maybe capture screen when finding location, achievement style?
+  - [ ] Should notify (plus noise?) user when a location is found
+- [ ] Users can upvote/downvote challenges
+- [ ] Users can report challenges
+  - [ ] Moves challenges into "reported" state, hiding them, and sending to me for review (for now immediate, maybe threshold in the future)
+- [ ] Users can report users
+  - [ ] Moves challenges into "reported" state, hiding them and any of their challenges, and sending to me for review (for now immediate, maybe threshold in the future)
