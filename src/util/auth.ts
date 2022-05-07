@@ -17,6 +17,17 @@ async function mapClass(apiKey: string, specializations: { pve: { id: number }[]
   return profession
 }
 
+async function mapWorld(apiKey: string, worldId: number) {
+  const data = await getGw2Data(apiKey, `worlds?ids=${worldId}`)
+  const world = data ? data[0] : null
+  if (!world) return null
+  return {
+    id: world.id,
+    name: world.name,
+    region: world.id.toString().startsWith('1') ? 'NA' : 'EU',
+  }
+}
+
 export async function getUserByToken(apiKey: string) {
   const matchingUser = await prisma.user.findFirst({ where: { apiKey } })
   if (matchingUser) return matchingUser
@@ -28,15 +39,22 @@ export async function getUserByToken(apiKey: string) {
     const characters = await Promise.all(
       (
         await getGw2Data(apiKey, 'characters?ids=all')
-      ).map(async ({ name, race, gender, profession, guild, age, specializations }) => ({
-        name,
-        race,
-        gender,
-        profession,
-        guild: guild || '',
-        age,
-        class: await mapClass(apiKey, specializations, profession),
-      }))
+      ).map(async ({ name, race, gender, profession, guild, age, specializations, world }) => {
+        const [worldData, classData] = await Promise.all([
+          mapWorld(apiKey, world),
+          mapClass(apiKey, specializations, profession),
+        ])
+        return {
+          name,
+          race,
+          gender,
+          profession,
+          world: worldData,
+          guild: guild || '',
+          age,
+          class: classData,
+        }
+      })
     )
     const guilds = (await Promise.all(gw2User.guilds.map((g) => getGw2Data(apiKey, `guild/${g}`)))).map((g) => {
       return {

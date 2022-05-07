@@ -19,7 +19,6 @@ const handler: NextApiHandler = async (req, res) => {
         // TODO: might be faster too
         include: { challenges: true },
       })
-      console.info(req.query.id.toString(), user)
       res.json(user ? clean(user) : null)
     } else {
       const users = await prisma.user.findMany({ include: { challenges: true } })

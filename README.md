@@ -7,6 +7,11 @@
 - This data includes positional data, and FFXIV has this [Sightseeing Log](https://ffxiv.consolegameswiki.com/wiki/Sightseeing_Log) idea I think is neat, plus GW2 has lots of hidden secret places
 - Let's put it all together
 
+## Documents
+
+- [API](./docs/api.md)
+- [Objects](./docs/objects.md)
+
 ## Features
 
 - [x] Sign in/User system based on [GW2 API Keys](https://wiki.guildwars2.com/wiki/API:API_key)

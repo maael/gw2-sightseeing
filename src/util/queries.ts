@@ -8,7 +8,7 @@ async function getChallenge(ctx): Promise<Challenge & { author: User }> {
 }
 
 export function useChallenge(id?: string, onSettled?: (data: any) => void) {
-  return useQuery(['challenges', id], getChallenge, {
+  return useQuery<Challenge>(['challenges', id], getChallenge, {
     onSettled,
     enabled: !!id,
     refetchInterval: false,
