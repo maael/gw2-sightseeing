@@ -18,7 +18,7 @@ type ChallengeSteps {
   image       String
   location    ChallengeStepsLocation
   name        String
-  precision   Int
+  precision   BigInt
 }
 
 type ChallengeStepsLocation {
@@ -35,13 +35,20 @@ type UserAccountData {
 }
 
 type UserAccountDataCharacters {
-  age        Int
+  age        BigInt
   class      String
   gender     String
   guild      String
   name       String
   profession String
   race       String
+  world      UserAccountDataCharactersWorld
+}
+
+type UserAccountDataCharactersWorld {
+  id     String
+  name   String
+  region String
 }
 
 type UserAccountDataGuilds {
@@ -55,22 +62,42 @@ type UserSettings {
 }
 
 model Challenge {
-  id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  authorId  String           @db.ObjectId
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  authorId    String           @db.ObjectId
   author   User   @relation(fields: [authorId], references: [id])
-  createdAt DateTime         @db.Date
-  name      String
-  state     String
-  steps     ChallengeSteps[]
-  updatedAt DateTime         @db.Date
+  createdAt   DateTime         @db.Date
+  description String
+  image       String
+  likes       Int @default(0)
+  masteries   String[]
+  mounts      String[]
+  name        String
+  state       String @default("draft")
+  steps       ChallengeSteps[]
+  updatedAt   DateTime         @db.Date
+  likeItems       ChallengeLikes[]
+  completions ChallengeCompletion[]
 }
 
 model ChallengeCompletion {
   id          String                     @id @default(auto()) @map("_id") @db.ObjectId
   challengeId String                     @db.ObjectId
+  challenge   Challenge   @relation(fields: [challengeId], references: [id])
   steps       ChallengeCompletionSteps[]
   userId      String                     @db.ObjectId
   user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([challengeId, userId], map: "ChallengeIdUserId")
+}
+
+model ChallengeLikes {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  challengeId String @db.ObjectId
+  challenge   Challenge   @relation(fields: [challengeId], references: [id])
+  userId      String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([challengeId, userId], map: "ChallengeIdUserId")
 }
 
 model User {
@@ -78,11 +105,14 @@ model User {
   accountData      UserAccountData
   apiKey           String
   createdAt        DateTime        @db.Date
-  gw2Id            String
-  primaryCharacter Int
+  gw2Id            String          @unique(map: "gw2Id")
+  gw2Name          String
+  primaryCharacter BigInt
+  role             String @default("user")
   settings         UserSettings
-  status           String
+  status           String @default("active")
   updatedAt        DateTime        @db.Date
+  likes            ChallengeLikes[]
   challenges       Challenge[]
-  challengeCompletions ChallengeCompletion[]
+  challengeCompletion ChallengeCompletion[]
 }

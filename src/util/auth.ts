@@ -65,6 +65,7 @@ export async function getUserByToken(apiKey: string) {
     })
     const data = {
       gw2Id: gw2User.id,
+      gw2Name: gw2User.name,
       accountData: {
         characters,
         name: gw2User.name,
@@ -78,7 +79,8 @@ export async function getUserByToken(apiKey: string) {
       settings: {
         mode: 'dark',
       },
-      status: 'enabled',
+      status: 'active',
+      role: 'user',
     }
     return prisma.user.create({
       data,
