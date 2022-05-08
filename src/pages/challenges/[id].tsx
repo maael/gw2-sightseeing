@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import useFound from '~/components/hooks/useFound'
 import Parchment from '~/components/primitives/Parchment'
 import { useChallenge } from '~/util/queries'
 
@@ -13,7 +14,7 @@ export default function Challenges() {
   const { isLoading, data } = useChallenge(id?.toString())
   const { data: session } = useSession()
   const isAuthor = data && (data.authorId === session?.user.id || session?.user.name === 'Mael.3259')
-  const foundIds = ['626ecbf7eb01ed777b8dcfc0']
+  const foundIds = useFound(data)
   return (
     <div className="w-full flex flex-col gap-5 pb-10">
       <Parchment outerClassName="wrapper" className="flex flex-row">

@@ -28,11 +28,11 @@ export const prepareHandle = (handlers: Handlers) => async (req: NextApiRequest,
   const session = await getSession({ req })
   const activeHandler = foundId ? possibleHandlers.id : possibleHandlers.general
   if (activeHandler) {
-    if (activeHandler.requireAuth) {
+    if (activeHandler.requireAuth && !session) {
       res.status(401).send({ message: 'Requires authorization' })
       return
     }
-    await activeHandler.fn(req, res, { session, id: foundId })
+    await activeHandler.fn(req, res, { session: session!, id: foundId })
   } else {
     res.status(401).json({ error: 'Not implemented' })
   }

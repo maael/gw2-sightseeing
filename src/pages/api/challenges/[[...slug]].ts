@@ -10,15 +10,22 @@ function cleanChallenge(c: Challenge & { author: User }) {
 
 function getChallengeData(type: 'create' | 'update', req, session) {
   const tz = new Date().toISOString()
-  const mappedData: Omit<Challenge, 'id'> & { id?: string } = JSON.parse(req.body)
+  const mappedData = JSON.parse(req.body)
   const id = mappedData.id
   delete (mappedData as any).description
   mappedData.authorId = session.user.id
   if (type === 'create') mappedData.createdAt = tz as unknown as Date
   mappedData.updatedAt = tz as unknown as Date
+  mappedData.steps = mappedData.steps.map((step) => {
+    step.precision = BigInt(step.precision)
+    return step
+  })
   mappedData.state = 'draft'
-  if (type === 'update') delete mappedData.id
-  console.info(mappedData)
+  if (type === 'update') {
+    delete mappedData.id
+    delete mappedData.authorId
+    mappedData.steps = { set: mappedData.steps }
+  }
   return { data: mappedData, id }
 }
 

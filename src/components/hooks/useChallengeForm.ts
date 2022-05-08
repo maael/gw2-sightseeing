@@ -59,9 +59,15 @@ export function useChallengeForm(grab: () => Promise<File | undefined>) {
     })
     await fetch(`/api/challenges`, {
       method: isEdit ? 'PUT' : 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(
+        data,
+        (_, value) => (typeof value === 'bigint' ? value.toString() : value) // return everything else unchanged
+      ),
     })
-      .then((r) => r.json())
+      .then(async (r) => {
+        if (r.ok) return r.json()
+        throw new Error(`[${r.status}]: ${await r.text()}`)
+      })
       .then((data) => push(data.id ? `/challenges/${data.id}` : '/'))
   })
   const { link, mapData } = useLink()

@@ -4,16 +4,20 @@ import { Handlers, prepareHandle } from '~/util/api'
 const handlers: Handlers = {
   GET: {
     requireAuth: true,
-    fn: async function (req, res) {
-      if (req.query.id) {
-        const results = await prisma.challengeCompletion.findFirst({
-          where: { id: req.query.id.toString() },
-        })
-        res.json(results)
-      } else {
-        const results = await prisma.challengeCompletion.findMany()
-        res.json(results)
-      }
+    fn: async function (req, res, { session }) {
+      const results = await prisma.challengeCompletion.findMany({
+        where: { userId: session.user.id },
+      })
+      res.json(results || [])
+    },
+  },
+  'GET/:id': {
+    requireAuth: true,
+    fn: async function (req, res, { session, id }) {
+      const results = await prisma.challengeCompletion.findFirst({
+        where: { id: id!, userId: session.user.id },
+      })
+      res.json(results || {})
     },
   },
   POST: {

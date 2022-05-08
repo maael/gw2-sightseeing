@@ -24,5 +24,14 @@ async function getUser(ctx): Promise<User & { challenges: Challenge }> {
 }
 
 export function useUser(id?: string) {
-  return useQuery(['users', id], getUser, { enabled: !!id })
+  return useQuery(['users', id], getUser, { enabled: !!id, refetchInterval: false })
+}
+
+async function getChallengeCompletion(ctx) {
+  const id = ctx.queryKey[1]
+  return id ? fetch(`/api/completion/${id}`).then((r) => r.json()) : {}
+}
+
+export function useChallengeCompletion(id?: string) {
+  return useQuery(['completions', id], getChallengeCompletion, { enabled: !!id, refetchInterval: false })
 }
