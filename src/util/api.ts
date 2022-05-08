@@ -32,7 +32,12 @@ export const prepareHandle = (handlers: Handlers) => async (req: NextApiRequest,
       res.status(401).send({ message: 'Requires authorization' })
       return
     }
-    await activeHandler.fn(req, res, { session: session!, id: foundId })
+    try {
+      await activeHandler.fn(req, res, { session: session!, id: foundId })
+    } catch (e) {
+      console.error(e)
+      res.status(500).json({ error: e.message })
+    }
   } else {
     res.status(401).json({ error: 'Not implemented' })
   }

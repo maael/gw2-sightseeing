@@ -1,7 +1,7 @@
 import { Challenge, ChallengeSteps } from '@prisma/client'
 import * as React from 'react'
 import { ReadyState } from 'react-use-websocket'
-import { useChallengeCompletion } from '~/util/queries'
+import { useChallengeCompletion, usePutChallengeCompletion } from '~/util/queries'
 import useLink from './useLink'
 
 function useNotification() {
@@ -20,9 +20,11 @@ function useNotification() {
 }
 
 export default function useFound(challenge?: Challenge) {
-  const [found, setFound] = React.useState(['626ecbf7eb01ed777b8dcfc0'])
-  const { data } = useChallengeCompletion(challenge?.id)
-  console.info(data)
+  const [found, setFound] = React.useState([{ id: '626ecbf7eb01ed777b8dcfc0', completedAt: new Date().toISOString() }])
+  useChallengeCompletion(challenge?.id, (data) => {
+    setFound(data.steps.map(({ id, completedAt }) => ({ id, completedAt: completedAt as unknown as string })))
+  })
+  const putChallengeCompletion = usePutChallengeCompletion()
   const { link, readyState } = useLink()
   const fireNotification = useNotification()
   React.useEffect(() => {
@@ -36,16 +38,21 @@ export default function useFound(challenge?: Challenge) {
       .filter((step) => {
         return within(playerLocation, step.location, step.precision)
       })
-      .map((step) => step.id)
-      .filter((id) => !found.includes(id))
+      .filter(({ id }) => !found.some((f) => f.id === id))
+      .map(({ id }) => ({ id, completedAt: new Date().toISOString() }))
     if (foundSteps.length) {
       const stepMap = new Map((challenge?.steps || []).map((s) => [s.id, s]))
       setFound((f) => {
-        foundSteps.forEach((s) => fireNotification(stepMap.get(s)!))
-        return [...new Set(f.concat(foundSteps))]
+        foundSteps.forEach((s) => fireNotification(stepMap.get(s.id)!))
+        const updated = [...new Set(f.concat(foundSteps))]
+        putChallengeCompletion.mutate({
+          id: challenge!.id,
+          steps: updated as any,
+        })
+        return updated
       })
     }
-  }, [found, link, readyState, challenge, fireNotification, setFound])
+  }, [found, link, readyState, challenge, fireNotification, setFound, putChallengeCompletion])
   return found
 }
 

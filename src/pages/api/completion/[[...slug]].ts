@@ -13,24 +13,25 @@ const handlers: Handlers = {
   },
   'GET/:id': {
     requireAuth: true,
-    fn: async function (req, res, { session, id }) {
+    fn: async function (req, res, { session, id: challengeId }) {
       const results = await prisma.challengeCompletion.findFirst({
-        where: { id: id!, userId: session.user.id },
+        where: { challengeId: challengeId!, userId: session.user.id },
       })
       res.json(results || {})
     },
   },
-  POST: {
+  'PUT/:id': {
     requireAuth: true,
-    fn: async function (_, res, { session, id: challengeId }) {
+    fn: async function (req, res, { session, id: challengeId }) {
       if (!challengeId) {
         res.status(401).send({ message: 'Requires challenge id' })
         return
       }
+      console.info('body', typeof req.body)
       const result = await prisma.challengeCompletion.upsert({
-        where: { id: '' },
-        create: { challengeId, userId: session.user.id },
-        update: { challengeId },
+        where: { challengeId_userId: { challengeId, userId: session.user.id } },
+        create: { challengeId, userId: session.user.id, steps: { set: JSON.parse(req.body) } },
+        update: { steps: { set: JSON.parse(req.body) } },
       })
       res.json(result)
     },

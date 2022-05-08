@@ -25,7 +25,7 @@ export default function Challenges() {
       <div className="wrapper-xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {data?.steps?.map((step) => (
-            <ChallengeStep key={step.id} step={step} foundIds={foundIds} />
+            <ChallengeStep key={step.id} step={step} foundIds={foundIds.map(({ id }) => id)} />
           ))}
         </div>
       </div>
