@@ -17,7 +17,7 @@
 - [x] Sign in/User system based on [GW2 API Keys](https://wiki.guildwars2.com/wiki/API:API_key)
   - [x] Get Guild data
   - [x] Get Character data
-  - [ ] Get World data
+  - [x] Get World data
   - [ ] Allow optionally showing/hiding the data
   - [ ] Have active "Following adventures of..." shown
 - [x] Can create Sightseeing "challenges"
@@ -29,9 +29,9 @@
 - [x] Can edit
   - All of the above stuff too
 - [ ] Users can start challenges
-  - [ ] Once started, it will automatically track progress while on the challenge page
+  - [x] Once started, it will automatically track progress while on the challenge page
     - [ ] Maybe capture screen when finding location, achievement style?
-  - [ ] Should notify (plus noise?) user when a location is found
+  - [x] Should notify (plus noise?) user when a location is found
 - [ ] Users can upvote/downvote challenges
 - [ ] Users can report challenges
   - [ ] Moves challenges into "reported" state, hiding them, and sending to me for review (for now immediate, maybe threshold in the future)
