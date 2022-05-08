@@ -32,6 +32,7 @@ type UserAccountData {
   characters UserAccountDataCharacters[]
   guilds     UserAccountDataGuilds[]
   name       String
+  world      UserAccountDataWorld
 }
 
 type UserAccountDataCharacters {
@@ -42,12 +43,11 @@ type UserAccountDataCharacters {
   name       String
   profession String
   race       String
-  world      UserAccountDataCharactersWorld
+  world      UserAccountDataCharactersWorld?
 }
 
 type UserAccountDataCharactersWorld {
   id     String
-  name   String
   region String
 }
 
@@ -55,6 +55,12 @@ type UserAccountDataGuilds {
   id   String
   name String
   tag  String
+}
+
+type UserAccountDataWorld {
+  id     String
+  name   String
+  region String
 }
 
 type UserSettings {

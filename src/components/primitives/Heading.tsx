@@ -8,7 +8,10 @@ import Scroll from '~/components/primitives/Scroll'
 export default function Heading() {
   const { data: session } = useSession()
   return (
-    <div className="flex flex-row gap-5 wrapper items-start py-2 mb-3 justify-between" style={{ flex: 0 }}>
+    <div
+      className="flex flex-col items-center sm:flex-row gap-1 sm:gap-5 wrapper sm:items-start py-2 mb-3 justify-between"
+      style={{ flex: 0 }}
+    >
       <Scroll outerClassName="text-3xl">
         <Link href="/">
           <a>

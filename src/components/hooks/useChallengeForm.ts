@@ -35,7 +35,6 @@ export function useChallengeForm(grab: () => Promise<File | undefined>) {
     setValue('id', id)
   }, [setValue, id])
   const onSubmit = handleSubmit(async (data) => {
-    console.info('what the fuck', id, data)
     const images = new Map(
       data.steps.filter((step) => step.image instanceof File).map((step) => [`${step.id}.png`, step.image])
     )
@@ -88,9 +87,9 @@ export function useChallengeForm(grab: () => Promise<File | undefined>) {
         append({
           id: new ObjectId().toString(),
           location,
-          precision: 100,
+          precision: BigInt(100),
           image,
-          name: `Somewhere in the ${mapData?.name || 'mists'}`,
+          name: `Somewhere in ${mapData?.name || 'the mists'}`,
         })
       },
       handleDrag: (e) => move(e.active.data.current?.sortable.index, e.over?.data.current?.sortable.index),

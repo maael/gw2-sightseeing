@@ -10,3 +10,7 @@
 .wrapper-xl {
   @apply mx-auto max-w-7xl w-full px-5;
 }
+
+.rough-outline {
+  filter: url(#squiggle);
+}

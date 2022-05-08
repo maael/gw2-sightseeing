@@ -18,8 +18,7 @@ const handlers: Handlers = {
   },
   POST: {
     requireAuth: true,
-    fn: async function (req, res, session) {
-      const challengeId = req.query.challengeId.toString()
+    fn: async function (_, res, { session, id: challengeId }) {
       if (!challengeId) {
         res.status(401).send({ message: 'Requires challenge id' })
         return

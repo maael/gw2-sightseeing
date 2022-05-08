@@ -7,6 +7,11 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
+// eslint-disable-next-line @typescript-eslint/no-extra-semi
+;(BigInt.prototype as any).toJSON = function () {
+  return this.toString()
+}
+
 export const prisma =
   global.prisma ||
   new PrismaClient({

@@ -40,13 +40,53 @@ export default function Index() {
   return (
     <div className="wrapper pb-10">
       <form onSubmit={onSubmit} className="flex flex-col gap-2">
-        <div className="flex flex-row gap-5 items-start">
-          <Parchment outerClassName="flex-1" className="flex flex-col gap-2">
-            <input {...register('id')} type="hidden" />
+        <div className="flex flex-row justify-between">
+          <div className="hidden sm:block">{elements}</div>
+
+          <button
+            className="text-2xl bg-green-500 px-2 py-1 rounded-sm text-green-800 flex gap-2 items-center justify-center"
+            type="submit"
+            aria-label="Save"
+          >
+            <MdOutlineSave />
+          </button>
+        </div>
+        <div className="flex flex-col gap-5 items-start">
+          <input {...register('id')} type="hidden" />
+          <Parchment outerClassName="flex-1 w-full" className="flex flex-col gap-2">
             <Input register={register} name="name" label="Challenge Name" />
             <Input register={register} name="description" label="Challenge Description" />
           </Parchment>
-          {elements}
+          <Parchment outerClassName="flex-1 w-full" className="flex flex-col gap-2">
+            <div className="flex flex-col md:flex-row gap-5 justify-between">
+              <h3>Mounts</h3>
+              <div className="flex flex-row gap-2 flex-wrap">
+                <div>Raptor</div>
+                <div>Springer</div>
+                <div>Skimmer</div>
+                <div>Jackal</div>
+                <div>Griffon</div>
+                <div>Roller Beetle</div>
+                <div>Skyscale</div>
+              </div>
+            </div>
+          </Parchment>
+          <Parchment outerClassName="flex-1 w-full" className="flex flex-col gap-2">
+            <div className="flex flex-col md:flex-row gap-5 justify-between">
+              <h3>Masteries</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <div>Glider Basics</div>
+                <div>Updraft Use</div>
+                <div>Ley Line Gliding</div>
+                <div>Bouncing Mushrooms</div>
+                <div>Itzel Poison Lore</div>
+                <div>Nuhoch Wallows</div>
+                <div>Jackel - Shifting Sands</div>
+                <div>Roller Beetle - Barrier Smash</div>
+                <div>Jade Bot</div>
+              </div>
+            </div>
+          </Parchment>
         </div>
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -73,13 +113,6 @@ export default function Index() {
           onClick={steps.add}
         >
           <CgAddR />
-        </button>
-        <button
-          className="text-2xl bg-green-500 px-2 py-1 rounded-sm text-green-800 flex gap-2 items-center justify-center"
-          type="submit"
-          aria-label="Save"
-        >
-          <MdOutlineSave />
         </button>
       </form>
     </div>

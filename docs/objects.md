@@ -15,12 +15,12 @@
         "guild": "1",
         "name": "Syaoranli",
         "profession": "Mesmer",
-        "race": "Asuran",
-        "world": { "id": "1001", "name": "name", "region": "EU" }
+        "race": "Asuran"
       }
     ],
     "guilds": [{ "id": "1", "name": "name", "tag": "[RPS]" }],
-    "name": "Name.1231"
+    "name": "Name.1231",
+    "world": { "id": "1001", "name": "name", "region": "EU" }
   },
   "role": "user|editor|admin",
   "apiKey": "123-123",

@@ -1,5 +1,5 @@
 import { Challenge, prisma, User } from '~/util/prisma'
-import { NextApiHandler } from 'next'
+import { prepareHandle, Handlers } from '~/util/api'
 
 function clean(user: User & { challenges: Challenge[] }) {
   return {
@@ -9,25 +9,30 @@ function clean(user: User & { challenges: Challenge[] }) {
   }
 }
 
-const handler: NextApiHandler = async (req, res) => {
-  if (req.method === 'GET') {
-    if (req.query.id) {
+const handlers: Handlers = {
+  GET: {
+    fn: async function (_, res) {
+      const users = await prisma.user.findMany({
+        include: { challenges: true },
+        where: { status: { equals: 'active' } },
+      })
+      const cleaned = users.map(clean)
+      res.json(cleaned)
+    },
+  },
+  'GET/:id': {
+    fn: async function (_, res, { id }) {
       const user = await prisma.user.findFirst({
-        // TODO: This doesn't seem to work with prisma, so move name to top level
-        where: { accountData: { name: req.query.id.toString() } },
+        where: { gw2Name: id! },
         // TODO: Maybe don't include challenges, as for /users/me we can use the id directly
         // TODO: might be faster too
         include: { challenges: true },
       })
       res.json(user ? clean(user) : null)
-    } else {
-      const users = await prisma.user.findMany({ include: { challenges: true } })
-      const cleaned = users.map(clean)
-      res.json(cleaned)
-    }
-  } else {
-    res.status(401).json({ error: 'Not implemented' })
-  }
+    },
+  },
 }
 
-export default handler
+const handle = prepareHandle(handlers)
+
+export default handle

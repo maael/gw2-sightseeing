@@ -1,17 +1,6 @@
-export interface ChallengeForm {
+import { Challenge } from '@prisma/client'
+
+export type ChallengeForm = Omit<Challenge, 'id' | 'steps' | 'createdAt' | 'updatedAt' | 'likes' | 'authorId'> & {
   id?: string
-  name: string
-  description: string
-  steps: Array<{
-    id: string
-    name: string
-    image: string | File
-    location: {
-      x: number
-      y: number
-      z: number
-    }
-    precision: number
-  }>
-  category: string
+  steps: Array<Omit<Challenge['steps'][0], 'image'> & { image: string | File }>
 }

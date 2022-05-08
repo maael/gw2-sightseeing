@@ -8,6 +8,7 @@ import useFathom from '~/components/hooks/useFathom'
 import SEO from '~/../next-seo.config'
 import EmojiFavicon from '~/components/primitives/EmojiFavicon'
 import Heading from '~/components/primitives/Heading'
+import RoughImageFilter from '~/components/primitives/RoughImageFilter'
 
 const queryClient = new QueryClient()
 
@@ -29,6 +30,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         </QueryClientProvider>
       </SessionProvider>
       <EmojiFavicon emoji="🤖" />
+      <RoughImageFilter />
     </>
   )
 }

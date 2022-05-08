@@ -1,29 +1,7 @@
 import _NextAuth from 'next-auth'
+import { User } from '@prisma/client'
 
-interface BasicUser {
-  accountData: {
-    characters: Array<{
-      age: number
-      class: string
-      gender: string
-      guild: string
-      name: string
-      profession: string
-      race: string
-    }>
-    guilds: Array<{
-      id: string
-      name: string
-      tag: string
-    }>
-    name: string
-  }
-  settings: {
-    mode: 'dark' | 'light'
-  }
-  primaryCharacter: number
-  id: string
-}
+type BasicUser = Pick<User, 'accountData' | 'settings' | 'primaryCharacter' | 'id'>
 
 declare module 'next-auth' {
   /**

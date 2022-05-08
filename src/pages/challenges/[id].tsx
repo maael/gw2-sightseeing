@@ -38,7 +38,7 @@ function ChallengeStep({ step, foundIds }: { step: ChallengeSteps; foundIds: str
     <Parchment outerClassName="w-full relative text-center">
       <div className={`flex flex-col gap-2 ${found ? 'opacity-60 grayscale filter' : ''}`}>
         {step.image ? (
-          <div className="aspect-video relative rounded-md overflow-hidden">
+          <div className="aspect-video relative rounded-md overflow-hidden rough-outline">
             <Image layout="fill" src={`https://${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT_DOMAIN}/${step.image}`} />
           </div>
         ) : null}
