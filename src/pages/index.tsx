@@ -13,8 +13,8 @@ export default function Index() {
   const { isLoading, data = [] } = useQuery('challenges', getChallenges)
   return (
     <div className="wrapper flex flex-col gap-5">
-      <div className="flex flex-row justify-between">
-        <Scroll className="flex-1">
+      <div className="flex flex-col sm:flex-row sm:justify-between">
+        <Scroll>
           {data.length} Challenge{data.length === 1 ? '' : 's'}
         </Scroll>
         <Link href="/challenges/edit/new">

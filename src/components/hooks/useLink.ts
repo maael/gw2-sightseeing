@@ -68,6 +68,6 @@ export default function useLink() {
       : null,
     mapData: results[1].data,
     specData: results[0].data,
-    continentData: continent,
+    continentData: continent.data,
   }
 }
